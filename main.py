@@ -9,8 +9,8 @@ import pandas as pd
 
 from extract_module.extract import get_csv_files, get_filenames
 
-from transform_module.transform import generate_df_dict, filter_df_dict
-from transform_module.transform import generate_base_clients, generate_base_lawsuits
+from transform_module.generate_bases import generate_df_dict, filter_df_dict
+from transform_module.generate_bases import generate_base_clients, generate_base_lawsuits
 
 
 from load_module.load import write_excel
