@@ -2,3 +2,4 @@
 *.xlsx:Zone.Identifier
 *.docx:Zone.Identifier
 *.py:Zone.Identifier
+*.txt

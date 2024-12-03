@@ -8,8 +8,11 @@ from pprint import pprint
 import pandas as pd
 
 from extract_module.extract import get_csv_files, get_filenames
+
 from transform_module.transform import generate_df_dict, filter_df_dict
 from transform_module.transform import generate_base_clients, generate_base_lawsuits
+
+
 from load_module.load import write_excel
 
 
@@ -217,25 +220,7 @@ def main():
 
     base_clients = generate_base_clients(filtered_dfs)
     base_clients['PAIS'] = base_clients['PAIS'].map({'Brasileiro' : 'BRASIL', 'Brasileira' : 'BRASIL', '' : ''})
-    # print(base_clients)
-    # base_df_lawsuits = filtered_dfs['v_processos']
-    # base_df_clients  = filtered_dfs['v_clientes']
 
-    # base_df_clients['NOME']                 = base_df_clients['razao_social']
-    # base_df_clients['CPF CNPJ']             = base_df_clients['cpf_cnpj']
-    # base_df_clients['RG']                   = base_df_clients['rg']
-    # base_df_clients['TELEFONE']             = base_df_clients['telefone1']
-    # base_df_clients['CELULAR']              = base_df_clients['telefone2']
-    # base_df_clients['EMAIL']                = base_df_clients['email1']
-    # base_df_clients['ESTADO CIVIL']         = base_df_clients['estado_civil']
-    # base_df_clients['NACIONALIDADE']        = base_df_clients['nacionalidade']
-    # base_df_clients['ESTADO']               = base_df_clients['uf']
-    # base_df_clients['CIDADE']               = base_df_clients['cidade']
-    # base_df_clients['CEP']                  = base_df_clients['cep']
-    # base_df_clients['ENDEREÇO']             = base_df_clients['logradouro']
-    # base_df_clients['BAIRRO']               = base_df_clients['bairro']
-    # base_df_clients['PIS PASEP']            = base_df_clients['pis']
-    # base_df_clients['DATA DE NASCIMENTO']   = base_df_clients['nascimento']
     
     
 
@@ -246,9 +231,7 @@ def main():
     ##########
     ##############################
 
-    print(base_clients[COLS_CLIENTES_FINAL])
     final_df_clients    = base_clients[COLS_CLIENTES_FINAL]
-    # final_df_clients    = base_clients
     write_excel(final_df_clients, 'FINAL - CLIENTES')
 
     # final_df_lawsuits   = base_df_lawsuits[COLS_PROCESSOS_FINAL]
@@ -261,7 +244,7 @@ def main():
 
 ##################################################
 ####################
-#                    INITIALIZATION OF SCRIPT
+#                    SCRIPT INITIALIZATION
 ####################
 ##################################################
 
