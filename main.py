@@ -1,19 +1,12 @@
 #!/usr/bin/env python3
 
-import logging
-from pathlib import Path
-import re
-from pprint import pprint
-
-import pandas as pd
-
 from extract_module.extract import get_csv_files, get_filenames
 
-from transform_module.generate_bases import generate_df_dict, filter_df_dict
+from transform_module.generate_bases import generate_df_dict
 from transform_module.generate_bases import generate_base_clients, generate_base_lawsuits
+from transform_module.data_wrangling import fix_professions_encoding, complete_free_fields
 
-
-from load_module.load import write_excel
+from load_module.export import write_excel
 
 
 
@@ -205,9 +198,9 @@ def main():
     ##########
     ##############################
     csv_files = get_csv_files()
-    filenames = get_filenames(csv_files)
+    filenames, csv_paths = get_filenames(csv_files)
     
-    
+
     
     ##############################
     ##########
@@ -215,13 +208,34 @@ def main():
     ##########
     ##############################
 
+    ####################
+    #     GENERAL - DataFrame dictionary generation
+    ####################
     dataframes_dict = generate_df_dict(csv_files, filenames)
-    filtered_dfs = filter_df_dict(dataframes_dict)
 
-    base_clients = generate_base_clients(filtered_dfs)
+
+    ####################
+    #     CLIENTS - Base DataFrame generation
+    ####################
+    base_clients = generate_base_clients(dataframes_dict)
+
+
+    ####################
+    #     CLIENTS - Data cleaning and transformation
+    ####################
+    base_clients['profissao'] = fix_professions_encoding(csv_paths, base_clients)
     base_clients['PAIS'] = base_clients['PAIS'].map({'Brasileiro' : 'BRASIL', 'Brasileira' : 'BRASIL', '' : ''})
 
+
+    ####################
+    #     LAWSUITS - DataFrame generation
+    ####################
+    base_lawsuits = generate_base_lawsuits(dataframes_dict)
+
     
+    ####################
+    #     LAWSUITS - Data cleaning and transformation
+    ####################
     
 
     
@@ -231,11 +245,18 @@ def main():
     ##########
     ##############################
 
+    ####################
+    #     CLIENTS - Exporting to Excel
+    ####################
     final_df_clients    = base_clients[COLS_CLIENTES_FINAL]
     write_excel(final_df_clients, 'FINAL - CLIENTES')
 
-    # final_df_lawsuits   = base_df_lawsuits[COLS_PROCESSOS_FINAL]
-    # write_excel(final_df_lawsuits, 'FINAL - PROCESSOS')
+
+    ####################
+    #     LAWSUITS - Exporting to Excel
+    ####################
+    final_df_lawsuits   = base_lawsuits[COLS_PROCESSOS_FINAL]
+    write_excel(final_df_lawsuits, 'FINAL - PROCESSOS')
 
 
 

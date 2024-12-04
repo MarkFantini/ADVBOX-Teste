@@ -3,3 +3,5 @@
 *.docx:Zone.Identifier
 *.py:Zone.Identifier
 *.txt
+*.ipynb
+Journal.md
