@@ -12,7 +12,7 @@ O teste consiste em:
 
 ## **2024-12-03**
 - Atualização do README, início da validação das colunas de CLIENTES.
--    
+- Criação do arquivo `data_wrangling` para limpeza e transformação das colunas dos dataframes.
 
 ## **2024-12-02**
 - Base do projeto pronta.
