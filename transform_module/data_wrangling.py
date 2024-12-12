@@ -457,6 +457,7 @@ def clients_data_treatment(df, csv_paths):
 
 def lawsuits_data_treatment(df, csv_paths):
     df = df.copy()
+    
     # 01. NOME DO CLIENTE
     clients_names = create_subset_df(csv_paths, cols=['codigo', 'razao_social', 'razao_social_2', 'nome_fantasia'], file='v_clientes')
     
@@ -466,40 +467,91 @@ def lawsuits_data_treatment(df, csv_paths):
     
     df['NOME DO CLIENTE'] = df['cod_cliente']
     df['NOME DO CLIENTE'] = df['NOME DO CLIENTE'].map(clients_dict)
+    duplicated_names = df.duplicated(subset=['NOME DO CLIENTE'], keep='first')
+    df = df[~duplicated_names]
+    
+
     # 02. PARTE CONTRÁRIA
-    # 03. TIPO DE AÇÃO
-    # 04. GRUPO DE AÇÃO
+    
+
+    # 03. TIPO DE AÇÃO - v_assunto | 'codassunto'
+    df['TIPO DE AÇÃO'] = column_mapped_by_dict(df, csv_paths, cols=['codigo', 'descricao'], file='v_objeto_acao', code='codigo', descrip='descricao', df_col='objeto_acao')
+
+    # 04. GRUPO DE AÇÃO - v_area_atuacao | 'codarea_acao'
+    df['GRUPO DE AÇÃO'] = column_mapped_by_dict(df, csv_paths, cols=['codigo', 'descricao'], file='v_area_atuacao', code='codigo', descrip='descricao', df_col='codarea_acao')
+
     # 05. FASE PROCESSUAL
     fase_subset = create_subset_df(csv_paths, cols=['codigo', 'fase'], file='v_fase')
     fase_dict = create_code_description_dict(fase_subset, code='codigo', descrip='fase')
     
     df['FASE PROCESSUAL'] = df['codigo_fase']
     df['FASE PROCESSUAL'] = df['FASE PROCESSUAL'].map(fase_dict)
+    
     # 06. ETAPA
+    
+
     # 07. NÚMERO DO PROCESSO
     df['NÚMERO DO PROCESSO'] = df['numero_processo']
-    # 08. PROCESSO ORIGINÁRIO
-    # 09. TRIBUNAL
-    # 10. VARA
-    # 11. COMARCA
-    comarca_subset = create_subset_df(csv_paths, cols=['codigo', 'descricao'], file='v_comarca')
-    comarca_dict = create_code_description_dict(comarca_subset, code='codigo', descrip='descricao')
     
-    df['COMARCA'] = df['codcomarca']
-    df['COMARCA'] = df['COMARCA'].map(comarca_dict)
+    # 08. PROCESSO ORIGINÁRIO
+    
+
+    # 09. TRIBUNAL
+
+
+    # 10. VARA - v_local_tramite | 'codlocaltramite'
+    df['VARA'] = column_mapped_by_dict(df, csv_paths, cols=['codigo', 'descricao'], file='v_local_tramite', code='codigo', descrip='descricao', df_col='codlocaltramite')
+    
+
+    # 11. COMARCA
+    df['COMARCA'] = column_mapped_by_dict(df, csv_paths, cols=['codigo', 'descricao'], file='v_comarca', code='codigo', descrip='descricao', df_col='codcomarca')
+
     # 12. PROTOCOLO
+    
+
     # 13. EXPECTATIVA/VALOR
+    
+
     # 14. VALOR HONORÁRIOS
+    
+
     # 15. PASTA
-    subset_df = create_subset_df(csv_paths, cols=['numero_pasta'], file='v_clientes')
-    df['PASTA'] = subset_df['numero_pasta']
+    pasta_df = create_subset_df(csv_paths, cols=['numero_pasta'], file='v_clientes')
+    df['PASTA'] = pasta_df['numero_pasta']
+    
     # 16. DATA CADASTRO
+    
+
     # 17. DATA FECHAMENTO
+    
+
     # 18. DATA TRANSITO
+    
+
     # 19. DATA ARQUIVAMENTO
+    
+
     # 20. DATA REQUERIMENTO
+    
+
     # 21. RESPONSÁVEL
+    
+
     # 22. ANOTAÇÕES GERAIS
+    df['grupo_processo'] = column_mapped_by_dict(df, csv_paths, file='v_grupo_processo', df_col='grupo_processo')
+    df['destino'] = column_mapped_by_dict(df, csv_paths, file='v_localizador', df_col='destino')
+    df['codassunto'] = column_mapped_by_dict(df, csv_paths, file='v_assunto', df_col='codassunto')
+    df['codprognostico'] = column_mapped_by_dict(df, csv_paths, file='v_prognosticos', df_col='codprognostico')
+    df['statusprocessual'] = column_mapped_by_dict(df, csv_paths, file='v_statusprocessual', df_col='statusprocessual')
+    
+    
+    df['ANOTAÇÕES GERAIS'] = insert_general_annotation(
+        df,
+        added_cols=['grupo_processo', 'destino', 'codassunto', 'codprognostico', 'statusprocessual'],
+        descriptions=['Grupo Processo', 'Destino', 'Assunto', 'Prognóstico', 'Status Processual'],
+	)
+
+
     
     return df
 
@@ -521,6 +573,7 @@ def format_pis(string):
 
 def birthdate_cleaning(df, col='DATA DE NASCIMENTO'):
 	new_col = df.apply(lambda row: re.sub(' \d{1,2}:\d{1,2}', '', row[col]), axis=1)
+     
 	return new_col
 
 def fix_encoding(csv_paths, df, col, file='v_clientes'):
@@ -538,3 +591,23 @@ def insert_general_annotation(df, added_cols, descriptions=None, base_col='ANOTA
         df[base_col] += f'{description}: ' + df[col] + '\n'
           
     return df[base_col]
+
+def create_subset_df(csv_paths, cols=None, file=None):
+	csv = csv_paths[file]
+	subset_df = pd.read_csv(csv, usecols=cols, sep=';', encoding='utf-8', dtype=str)
+    
+	return subset_df
+
+def create_code_description_dict(df, code=None, descrip=None):
+    mapping_dict = {code_num : description for code_num, description in zip(df[code], df[descrip])}
+    
+    mapping_dict[''] = ''
+    
+    return mapping_dict
+
+def column_mapped_by_dict(df, csv_paths, cols=['codigo', 'descricao'], file=None, code='codigo', descrip='descricao', df_col=None):
+    subset_df = create_subset_df(csv_paths, cols=cols, file=file)
+    map_dict = create_code_description_dict(subset_df, code=code, descrip=descrip)
+
+    df[df_col] = df[df_col].map(map_dict)
+    return df[df_col]
