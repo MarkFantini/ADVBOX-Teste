@@ -19,8 +19,18 @@ O teste consiste em:
 # Changelog
 
 
-- **2024-12-04**
-    - 
+- **2024-12-11**
+    - Finalização da coluna CLIENTES, incluindo tratamento dos dados das colunas:
+        - NOME
+        - CPF CNPJ
+        - PROFISSÃO
+        - CEP
+        - PIS PASEP
+        - NACIONALIDADE
+        - PAIS
+        - SEXO
+        - DATA DE NASCIMENTO
+        - ANOTAÇÕES GERAIS
 - **2024-12-03**
     - Atualização do README, início da validação das colunas de CLIENTES.
     - Criação do arquivo `data_wrangling` para limpeza e transformação das colunas dos dataframes.
