@@ -353,7 +353,7 @@ PROFESSIONS_DICT = {
 }
 
 
-def clients_data_treatment(df, csv_paths, base_file='v_clients'):
+def clients_data_treatment(df, csv_paths):
 	df = df.copy()
 
 	# 01. NOME
@@ -454,6 +454,35 @@ def clients_data_treatment(df, csv_paths, base_file='v_clients'):
 
 
 	return df
+
+def lawsuits_data_treatment(df, csv_paths):
+    df = df.copy()
+    # 01. NOME DO CLIENTE
+    
+    # 02. PARTE CONTRÁRIA
+    # 03. TIPO DE AÇÃO
+    # 04. GRUPO DE AÇÃO
+    # 05. FASE PROCESSUAL
+    # 06. ETAPA
+    # 07. NÚMERO DO PROCESSO
+    # 08. PROCESSO ORIGINÁRIO
+    # 09. TRIBUNAL
+    # 10. VARA
+    # 11. COMARCA
+    # 12. PROTOCOLO
+    # 13. EXPECTATIVA/VALOR
+    # 14. VALOR HONORÁRIOS
+    # 15. PASTA
+    pasta = csv_paths[]
+    # 16. DATA CADASTRO
+    # 17. DATA FECHAMENTO
+    # 18. DATA TRANSITO
+    # 19. DATA ARQUIVAMENTO
+    # 20. DATA REQUERIMENTO
+    # 21. RESPONSÁVEL
+    # 22. ANOTAÇÕES GERAIS
+    
+    return df
 
 def pick_first_nonempty_row(df, col1, col2, col3=None):
     df = df.copy()
