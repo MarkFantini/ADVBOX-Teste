@@ -1,5 +1,6 @@
 import re
 import pandas as pd
+from datetime import date
 
 BASE_CLIENTS_DICT = {
 	'NOME'                 	: 'razao_social',
@@ -374,7 +375,7 @@ def clients_data_treatment(df, csv_paths):
 
 	# 05. DATA DE NASCIMENTO
 	df['DATA DE NASCIMENTO'] = df['nascimento']
-	df['DATA DE NASCIMENTO'] = birthdate_cleaning(df)
+	df['DATA DE NASCIMENTO'] = date_formatting(df, col='DATA DE NASCIMENTO')
 
 	# 06. ESTADO CIVIL
 	df['ESTADO CIVIL'] = df['estado_civil'].str.upper()
@@ -447,7 +448,7 @@ def clients_data_treatment(df, csv_paths):
 	df['ANOTAÇÕES GERAIS'] = ''
 	df['ANOTAÇÕES GERAIS'] = insert_general_annotation(
         df,
-        added_cols=['razao_social', 'razao_social_2', 'nome_fantasia', 'responsavel', 'contato_nome', 'contato_telefone1', 'observacoes', 'cliente', 'ativo', 'inclusao', 'grupo_cliente', 'telefone_comercial', 'nome_pai', 'cod_fase_cliente', 'cod_perfil_cliente', 'campo_livre1', 'campo_livre2', 'numero_pasta', 'cod_escolaridade'],
+        original_cols=['razao_social', 'razao_social_2', 'nome_fantasia', 'responsavel', 'contato_nome', 'contato_telefone1', 'observacoes', 'cliente', 'ativo', 'inclusao', 'grupo_cliente', 'telefone_comercial', 'nome_pai', 'cod_fase_cliente', 'cod_perfil_cliente', 'campo_livre1', 'campo_livre2', 'numero_pasta', 'cod_escolaridade'],
         descriptions=['Razão Social', 'Razão Social 2', 'Nome Fantasia', 'Responsável', 'Nome do Contato', 'Telefone Contato', 'Observações', 'Tipo do Cliente', 'Ativo', 'Data de Inclusão', 'Grupo do Cliente', 'Telefone Comercial', 'Nome do Pai', 'Fase Cliente', 'Perfil Cliente', 'Campo Livre 1', 'Campo Livre 2', 'Número da Pasta', 'Código Escolaridade'],
 	)
 
@@ -510,45 +511,64 @@ def lawsuits_data_treatment(df, csv_paths):
     
 
     # 13. EXPECTATIVA/VALOR
-    
+    df['EXPECTATIVA/VALOR'] = df['valor_causa'].astype(float)
+    df['EXPECTATIVA/VALOR'] = df['EXPECTATIVA/VALOR'].apply(lambda x: f"{x:.2f}")
+    df['EXPECTATIVA/VALOR'] = df['EXPECTATIVA/VALOR'].astype(str)
+    df['EXPECTATIVA/VALOR'] = df['EXPECTATIVA/VALOR'].str.replace('.', ',')
 
     # 14. VALOR HONORÁRIOS
-    
+    df['VALOR HONORÁRIOS'] = df['valor_causa2'].astype(float)
+    df['VALOR HONORÁRIOS'] = df['VALOR HONORÁRIOS'].apply(lambda x: f"{x:.2f}")
+    df['VALOR HONORÁRIOS'] = df['VALOR HONORÁRIOS'].astype(str)
+    df['VALOR HONORÁRIOS'] = df['VALOR HONORÁRIOS'].str.replace('.', ',')
 
     # 15. PASTA
     pasta_df = create_subset_df(csv_paths, cols=['numero_pasta'], file='v_clientes')
     df['PASTA'] = pasta_df['numero_pasta']
     
     # 16. DATA CADASTRO
+    df['DATA CADASTRO'] = df['data_entrada']
+    df['DATA CADASTRO'] = date_formatting(df, col='DATA CADASTRO')
+    df['DATA CADASTRO'] = df['DATA CADASTRO'].apply(lambda row: row if row else date.today().strftime("%d/%m/%Y"))
     
 
     # 17. DATA FECHAMENTO
-    
+    df['DATA FECHAMENTO'] = df['data_contratacao']
+    df['DATA FECHAMENTO'] = date_formatting(df, col='DATA FECHAMENTO')
+    df['DATA FECHAMENTO'] = df['DATA FECHAMENTO'].apply(lambda row: row if row else date.today().strftime("%d/%m/%Y"))
 
     # 18. DATA TRANSITO
-    
+    df['DATA TRANSITO'] = df['data_transitojulgado']
+    df['DATA TRANSITO'] = date_formatting(df, col='DATA TRANSITO')
 
     # 19. DATA ARQUIVAMENTO
-    
+    df['DATA ARQUIVAMENTO'] = df['data_encerramento']
+    df['DATA ARQUIVAMENTO'] = date_formatting(df, col='DATA ARQUIVAMENTO')
 
     # 20. DATA REQUERIMENTO
-    
+    df['DATA REQUERIMENTO'] = df['data_distribuicao']
+    df['DATA REQUERIMENTO'] = date_formatting(df, col='DATA REQUERIMENTO')
 
     # 21. RESPONSÁVEL
-    
+    df['RESPONSÁVEL'] = column_mapped_by_dict(df, csv_paths, cols=['id', 'nome'], code='id', descrip='nome', file='v_usuario', df_col='cod_usuario')
 
     # 22. ANOTAÇÕES GERAIS
-    df['grupo_processo'] = column_mapped_by_dict(df, csv_paths, file='v_grupo_processo', df_col='grupo_processo')
-    df['destino'] = column_mapped_by_dict(df, csv_paths, file='v_localizador', df_col='destino')
-    df['codassunto'] = column_mapped_by_dict(df, csv_paths, file='v_assunto', df_col='codassunto')
-    df['codprognostico'] = column_mapped_by_dict(df, csv_paths, file='v_prognosticos', df_col='codprognostico')
-    df['statusprocessual'] = column_mapped_by_dict(df, csv_paths, file='v_statusprocessual', df_col='statusprocessual')
+    df['grupo_processo'].to_csv()
+    df['grupo_processo'] 	= column_mapped_by_dict(df, csv_paths, file='v_grupo_processo', df_col='grupo_processo')
+    
+    df['destino'] 			= column_mapped_by_dict(df, csv_paths, file='v_localizador', df_col='destino')
+    
+    df['codassunto'] 		= column_mapped_by_dict(df, csv_paths, file='v_assunto', df_col='codassunto')
+    
+    df['codprognostico'] 	= column_mapped_by_dict(df, csv_paths, file='v_prognosticos', df_col='codprognostico')
+    
+    df['statusprocessual'] 	= column_mapped_by_dict(df, csv_paths, file='v_statusprocessual', df_col='statusprocessual')
     
     
     df['ANOTAÇÕES GERAIS'] = insert_general_annotation(
         df,
-        added_cols=['grupo_processo', 'destino', 'codassunto', 'codprognostico', 'statusprocessual'],
-        descriptions=['Grupo Processo', 'Destino', 'Assunto', 'Prognóstico', 'Status Processual'],
+        original_cols=['grupo_processo', 'destino', 'codassunto', 'codprognostico', 'statusprocessual', 'observacoes', 'data_atendimento', 'data_sentenca', 'data_execucao', 'data_ultima_visualizacao'],
+        descriptions=['Grupo Processo', 'Destino', 'Assunto', 'Prognóstico', 'Status Processual', 'Observações', 'Atendimento', 'Sentença', 'Execução', 'Última Visualização'],
 	)
 
 
@@ -571,7 +591,7 @@ def format_pis(string):
     
     return formatted
 
-def birthdate_cleaning(df, col='DATA DE NASCIMENTO'):
+def date_formatting(df, col=None):
 	new_col = df.apply(lambda row: re.sub(' \d{1,2}:\d{1,2}', '', row[col]), axis=1)
      
 	return new_col
@@ -583,13 +603,20 @@ def fix_encoding(csv_paths, df, col, file='v_clientes'):
 
     return df[col]
 
-def insert_general_annotation(df, added_cols, descriptions=None, base_col='ANOTAÇÕES GERAIS'):
-    if descriptions is None:
+def insert_general_annotation(df, original_cols=None, descriptions=None, base_col='ANOTAÇÕES GERAIS'):
+    if original_cols is None or descriptions is None:
         return df[base_col]
+    
+    col_mapping = {original : description for original, description in zip(original_cols, descriptions)}
 
-    for col, description in zip(added_cols, descriptions):
-        df[base_col] += f'{description}: ' + df[col] + '\n'
-          
+    def row_processing(row):
+        values = [f'{col_mapping[col]}: {row[col]}' for col in col_mapping if row[col]]
+        joined_str = '\n'.join(values)
+
+        return joined_str
+    
+    df[base_col] = df.apply(row_processing, axis=1)
+    
     return df[base_col]
 
 def create_subset_df(csv_paths, cols=None, file=None):
@@ -610,4 +637,5 @@ def column_mapped_by_dict(df, csv_paths, cols=['codigo', 'descricao'], file=None
     map_dict = create_code_description_dict(subset_df, code=code, descrip=descrip)
 
     df[df_col] = df[df_col].map(map_dict)
+    
     return df[df_col]
