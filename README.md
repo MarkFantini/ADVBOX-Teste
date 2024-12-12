@@ -9,8 +9,8 @@ O teste consiste em:
 
 # Em progresso
 
-1. Validação das colunas da planilha CLIENTES e ajustes finais.
-2. Geração da planilha PROCESSOS.
+1. [x] ~~Validação das colunas da planilha CLIENTES e ajustes finais.~~
+2. [x] ~~Geração da planilha PROCESSOS.~~
 3. Validação das colunas da planilha PROCESSOS e ajustes finais.
 4. Criação de um log para monitoramento do processo de criação, garantindo observabilidade para o processo.
 5. Criação de testes para as etapas, garantindo uma pipeline segura.
