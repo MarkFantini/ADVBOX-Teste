@@ -470,6 +470,11 @@ def lawsuits_data_treatment(df, csv_paths):
     # 03. TIPO DE AÇÃO
     # 04. GRUPO DE AÇÃO
     # 05. FASE PROCESSUAL
+    fase_subset = create_subset_df(csv_paths, cols=['codigo', 'fase'], file='v_fase')
+    fase_dict = create_code_description_dict(fase_subset, code='codigo', descrip='fase')
+    
+    df['FASE PROCESSUAL'] = df['codigo_fase']
+    df['FASE PROCESSUAL'] = df['FASE PROCESSUAL'].map(fase_dict)
     # 06. ETAPA
     # 07. NÚMERO DO PROCESSO
     # 08. PROCESSO ORIGINÁRIO
