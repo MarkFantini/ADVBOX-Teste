@@ -235,7 +235,7 @@ def main():
     ####################
     #     LAWSUITS - Data cleaning and transformation
     ####################
-    
+    cleaned_base_lawsuits = lawsuits_data_treatment(base_lawsuits, name_csv_dict)
 
     
     ##############################
