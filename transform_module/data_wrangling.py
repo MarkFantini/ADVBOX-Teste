@@ -477,6 +477,7 @@ def lawsuits_data_treatment(df, csv_paths):
     df['FASE PROCESSUAL'] = df['FASE PROCESSUAL'].map(fase_dict)
     # 06. ETAPA
     # 07. NÚMERO DO PROCESSO
+    df['NÚMERO DO PROCESSO'] = df['numero_processo']
     # 08. PROCESSO ORIGINÁRIO
     # 09. TRIBUNAL
     # 10. VARA
