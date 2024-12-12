@@ -482,6 +482,11 @@ def lawsuits_data_treatment(df, csv_paths):
     # 09. TRIBUNAL
     # 10. VARA
     # 11. COMARCA
+    comarca_subset = create_subset_df(csv_paths, cols=['codigo', 'descricao'], file='v_comarca')
+    comarca_dict = create_code_description_dict(comarca_subset, code='codigo', descrip='descricao')
+    
+    df['COMARCA'] = df['codcomarca']
+    df['COMARCA'] = df['COMARCA'].map(comarca_dict)
     # 12. PROTOCOLO
     # 13. EXPECTATIVA/VALOR
     # 14. VALOR HONORÁRIOS
