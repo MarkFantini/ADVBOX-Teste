@@ -229,7 +229,7 @@ def main():
     ####################
     #     LAWSUITS - DataFrame generation
     ####################
-    cleaned_base_lawsuits = generate_base_lawsuits(dataframes_dict)
+    base_lawsuits = generate_base_lawsuits(dataframes_dict)
 
     
     ####################
