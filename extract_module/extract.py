@@ -8,6 +8,6 @@ def get_csv_files(pattern='**/v_*_CodEmpresa_*.csv'):
 
 def get_filenames(csv_files):
     filenames = [re.sub('_CodEmpresa_\d+.csv', '', file.name) for file in csv_files]
-    csv_paths = {name : csv for name, csv in zip(filenames, csv_files)}
+    name_csv_dict = {name : csv for name, csv in zip(filenames, csv_files)}
 
-    return filenames, csv_paths
+    return filenames, name_csv_dict

@@ -178,12 +178,6 @@ def generate_base_clients(dataframes_dict, name='v_clientes'):
 	base_clients = dataframes_dict[name].copy()
 
 	base_clients[CLIENTS_FINAL_COLS] = ''
-	
-	for result_col, base_col in BASE_CLIENTS_DICT.items():
-		try:
-			base_clients[result_col] = base_clients[base_col]
-		except:
-			continue
 		
 	return base_clients
 
@@ -192,12 +186,6 @@ def generate_base_lawsuits(dataframes_dict, name='v_processos'):
 	base_lawsuits = dataframes_dict[name].copy()
 
 	base_lawsuits[LAWSUITS_FINAL_COLS] = ''
-	
-	# for result_col, base_col in BASE_LAWSUITS_DICT.items():
-	# 	try:
-	# 		base_lawsuits[result_col] = base_lawsuits[base_col]
-	# 	except:
-	# 		continue
 	
 	return base_lawsuits
 

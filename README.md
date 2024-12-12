@@ -7,18 +7,6 @@ O teste consiste em:
 - Realizar a seleção e tratamento dos dados das tabelas para duas planilhas resultado (CLIENTES e PROCESSOS), garantindo as condições de validação;
 - Criar uma interface simples de usuário para que o operador possa subir a base de backup e obter as planilhas correspondentes.
 
-
-# Changelog
-
-## **2024-12-03**
-- Atualização do README, início da validação das colunas de CLIENTES.
-- Criação do arquivo `data_wrangling` para limpeza e transformação das colunas dos dataframes.
-
-## **2024-12-02**
-- Base do projeto pronta.
-- Capaz de gerar uma planilha de CLIENTES porém sem validação.
-
-
 # Em progresso
 
 1. Validação das colunas da planilha CLIENTES e ajustes finais.
@@ -27,4 +15,19 @@ O teste consiste em:
 4. Criação de um log para monitoramento do processo de criação, garantindo observabilidade para o processo.
 5. Criação de testes para as etapas, garantindo uma pipeline segura.
 6. Criação da interface usando Streamlit.
+
+# Changelog
+
+
+- **2024-12-04**
+    - 
+- **2024-12-03**
+    - Atualização do README, início da validação das colunas de CLIENTES.
+    - Criação do arquivo `data_wrangling` para limpeza e transformação das colunas dos dataframes.
+- **2024-12-02**
+    - Base do projeto pronta.
+    - Capaz de gerar uma planilha de CLIENTES porém sem validação.
+
+
+
 

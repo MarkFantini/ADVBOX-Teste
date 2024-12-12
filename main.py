@@ -4,13 +4,13 @@ from extract_module.extract import get_csv_files, get_filenames
 
 from transform_module.generate_bases import generate_df_dict
 from transform_module.generate_bases import generate_base_clients, generate_base_lawsuits
-from transform_module.data_wrangling import fix_professions_encoding, complete_free_fields
+from transform_module.data_wrangling import clients_data_treatment
 
 from load_module.export import write_excel
 
 
 
-COLS_CLIENTES_FINAL = [
+CLIENTS_FINAL_COLS = [
 	'NOME',							# OBRIGATÓRIO # CHECK
 	'CPF CNPJ', # CHECK
 	'RG', # CHECK
@@ -35,7 +35,7 @@ COLS_CLIENTES_FINAL = [
 	'ORIGEM DO CLIENTE',			# OBRIGATÓRIO
 	'ANOTAÇÕES GERAIS' # CHECK
 ]
-COLS_PROCESSOS_FINAL = [
+LAWSUITS_FINAL_COLS = [
 	'NOME DO CLIENTE', 				# OBRIGATÓRIO
 	'PARTE CONTRÁRIA',
 	'TIPO DE AÇÃO', 				# OBRIGATÓRIO
@@ -95,7 +95,7 @@ DROP_COLS_PROCESSOS = [
                                 'cod_processo_removido'
                               ]
 
-DICIO_CONVERSAO_DF_CLIENTES = {
+CLIENTS_DICT_COLUMN_CONVERSION = {
     'codigo'                        : 'ANOTAÇÕES GERAIS',
 	'razao_social' 					: 'NOME', # CHECK
 	'razao_social_2' 				: 'NOME',
@@ -142,7 +142,7 @@ DICIO_CONVERSAO_DF_CLIENTES = {
 	'numero_pasta'				 	: 'ANOTAÇÕES GERAIS',
 	'cod_escolaridade'				: 'ANOTAÇÕES GERAIS',
 }
-DICIO_CONVERSAO_DF_PROCESSOS = {
+LAWSUITS_DICT_COLUMN_CONVERSION = {
     'ativo'							: 'ANOTAÇÕES GERAIS',
     'campo_livre1'					: 'ANOTAÇÕES GERAIS',
     'campo_livre3'					: 'ANOTAÇÕES GERAIS',
@@ -197,8 +197,8 @@ def main():
     #          EXTRACTION PHASE
     ##########
     ##############################
-    csv_files = get_csv_files()
-    filenames, csv_paths = get_filenames(csv_files)
+    csv_files            = get_csv_files()
+    filenames, name_csv_dict = get_filenames(csv_files)
     
 
     
@@ -210,7 +210,7 @@ def main():
 
     ####################
     #     GENERAL - DataFrame dictionary generation
-    ####################
+    
     dataframes_dict = generate_df_dict(csv_files, filenames)
 
 
@@ -223,14 +223,13 @@ def main():
     ####################
     #     CLIENTS - Data cleaning and transformation
     ####################
-    base_clients['profissao'] = fix_professions_encoding(csv_paths, base_clients)
-    base_clients['PAIS'] = base_clients['PAIS'].map({'Brasileiro' : 'BRASIL', 'Brasileira' : 'BRASIL', '' : ''})
+    cleaned_base_clients = clients_data_treatment(base_clients, name_csv_dict)
 
 
     ####################
     #     LAWSUITS - DataFrame generation
     ####################
-    base_lawsuits = generate_base_lawsuits(dataframes_dict)
+    cleaned_base_lawsuits = generate_base_lawsuits(dataframes_dict)
 
     
     ####################
@@ -248,14 +247,14 @@ def main():
     ####################
     #     CLIENTS - Exporting to Excel
     ####################
-    final_df_clients    = base_clients[COLS_CLIENTES_FINAL]
+    final_df_clients    = cleaned_base_clients[CLIENTS_FINAL_COLS]
     write_excel(final_df_clients, 'FINAL - CLIENTES')
 
 
     ####################
     #     LAWSUITS - Exporting to Excel
     ####################
-    final_df_lawsuits   = base_lawsuits[COLS_PROCESSOS_FINAL]
+    final_df_lawsuits   = cleaned_base_lawsuits[LAWSUITS_FINAL_COLS]
     write_excel(final_df_lawsuits, 'FINAL - PROCESSOS')
 
 
