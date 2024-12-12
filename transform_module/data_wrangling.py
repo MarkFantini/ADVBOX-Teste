@@ -458,7 +458,14 @@ def clients_data_treatment(df, csv_paths):
 def lawsuits_data_treatment(df, csv_paths):
     df = df.copy()
     # 01. NOME DO CLIENTE
+    clients_names = create_subset_df(csv_paths, cols=['codigo', 'razao_social', 'razao_social_2', 'nome_fantasia'], file='v_clientes')
     
+    clients_names['NOME'] = pick_first_nonempty_row(clients_names, col1='razao_social', col2='razao_social_2', col3='nome_fantasia')
+    
+    clients_dict = create_code_description_dict(clients_names, code='codigo', descrip='NOME')
+    
+    df['NOME DO CLIENTE'] = df['cod_cliente']
+    df['NOME DO CLIENTE'] = df['NOME DO CLIENTE'].map(clients_dict)
     # 02. PARTE CONTRÁRIA
     # 03. TIPO DE AÇÃO
     # 04. GRUPO DE AÇÃO
