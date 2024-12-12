@@ -248,14 +248,14 @@ def main():
     #     CLIENTS - Exporting to Excel
     ####################
     final_df_clients    = cleaned_base_clients[CLIENTS_FINAL_COLS]
-    write_excel(final_df_clients, 'FINAL - CLIENTES')
+    write_excel(final_df_clients, 'CLIENTES - 92577')
 
 
     ####################
     #     LAWSUITS - Exporting to Excel
     ####################
     final_df_lawsuits   = cleaned_base_lawsuits[LAWSUITS_FINAL_COLS]
-    write_excel(final_df_lawsuits, 'FINAL - PROCESSOS')
+    write_excel(final_df_lawsuits, 'PROCESSOS - 92577')
 
 
 
