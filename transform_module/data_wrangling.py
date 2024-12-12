@@ -491,7 +491,8 @@ def lawsuits_data_treatment(df, csv_paths):
     # 13. EXPECTATIVA/VALOR
     # 14. VALOR HONORÁRIOS
     # 15. PASTA
-    pasta = csv_paths[]
+    subset_df = create_subset_df(csv_paths, cols=['numero_pasta'], file='v_clientes')
+    df['PASTA'] = subset_df['numero_pasta']
     # 16. DATA CADASTRO
     # 17. DATA FECHAMENTO
     # 18. DATA TRANSITO
