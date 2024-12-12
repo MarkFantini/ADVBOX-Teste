@@ -4,7 +4,7 @@ from extract_module.extract import get_csv_files, get_filenames
 
 from transform_module.generate_bases import generate_df_dict
 from transform_module.generate_bases import generate_base_clients, generate_base_lawsuits
-from transform_module.data_wrangling import clients_data_treatment
+from transform_module.data_wrangling import clients_data_treatment, lawsuits_data_treatment
 
 from load_module.export import write_excel
 
