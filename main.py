@@ -8,8 +8,6 @@ from transform_module.data_wrangling import clients_data_treatment, lawsuits_dat
 
 from load_module.export import write_excel
 
-
-
 CLIENTS_FINAL_COLS = [
 	'NOME',							# OBRIGATÓRIO # CHECK
 	'CPF CNPJ', # CHECK
@@ -188,85 +186,32 @@ LAWSUITS_DICT_COLUMN_CONVERSION = {
     'valor_causa2'					: 'VALOR HONORÁRIOS'
 }
 
-
-
-
 def main():
-    ##############################
-    ##########
-    #          EXTRACTION PHASE
-    ##########
-    ##############################
-    csv_files            = get_csv_files()
+    ########## EXTRACTION PHASE
+    csv_files                = get_csv_files()
     filenames, name_csv_dict = get_filenames(csv_files)
     
-
-    
-    ##############################
-    ##########
-    #          TRANSFORMATION PHASE
-    ##########
-    ##############################
-
-    ####################
-    #     GENERAL - DataFrame dictionary generation
-    
+    ########## TRANSFORMATION PHASE
+    #          DataFrame dictionary
     dataframes_dict = generate_df_dict(csv_files, filenames)
 
-
-    ####################
-    #     CLIENTS - Base DataFrame generation
-    ####################
-    base_clients = generate_base_clients(dataframes_dict)
-
-
-    ####################
-    #     CLIENTS - Data cleaning and transformation
-    ####################
+    #          CLIENTS
+    base_clients         = generate_base_clients(dataframes_dict)
     cleaned_base_clients = clients_data_treatment(base_clients, name_csv_dict)
 
-
-    ####################
-    #     LAWSUITS - DataFrame generation
-    ####################
-    base_lawsuits = generate_base_lawsuits(dataframes_dict)
-
-    
-    ####################
-    #     LAWSUITS - Data cleaning and transformation
-    ####################
+    #          LAWSUITS
+    base_lawsuits         = generate_base_lawsuits(dataframes_dict)
     cleaned_base_lawsuits = lawsuits_data_treatment(base_lawsuits, name_csv_dict)
 
-    
-    ##############################
-    ##########
-    #          LOAD PHASE
-    ##########
-    ##############################
-
-    ####################
-    #     CLIENTS - Exporting to Excel
-    ####################
+    ########## LOAD PHASE
+    #          CLIENTS
     final_df_clients    = cleaned_base_clients[CLIENTS_FINAL_COLS]
     write_excel(final_df_clients, 'CLIENTES - 92577')
 
-
-    ####################
-    #     LAWSUITS - Exporting to Excel
-    ####################
+    #          LAWSUITS
     final_df_lawsuits   = cleaned_base_lawsuits[LAWSUITS_FINAL_COLS]
     write_excel(final_df_lawsuits, 'PROCESSOS - 92577')
 
-
-
-
-
-
-##################################################
-####################
 #                    SCRIPT INITIALIZATION
-####################
-##################################################
-
 if __name__ == '__main__':
     main()

@@ -19,6 +19,9 @@ O teste consiste em:
 # Changelog
 
 - **2024-12-12**
+    - Validação da coluna NÚMERO DO PROCESSO e transferência de valores que não se encaixam na coluna PROTOCOLO
+    - Arquivo final renomeado para CLIENTES - 92577 e PROCESSOS - 92577, correspondente ao número da empresa
+    - Ajuste do preenchimento da coluna ANOTAÇÕES GERAIS da planilha CLIENTES
     - Início do tratamento da planilha PROCESSOS. Colunas preenchidas:
         - NOME DO CLIENTE
         - TIPO DE AÇÃO
@@ -37,9 +40,6 @@ O teste consiste em:
         - DATA REQUERIMENTO
         - RESPONSÁVEL
         - ANOTAÇÕES GERAIS (parcialmente)
-    - Ajuste do preenchimento da coluna ANOTAÇÕES GERAIS da planilha CLIENTES
-    - Arquivo final renomeado para CLIENTES - 92577 e PROCESSOS - 92577, correspondente ao número da empresa
-    - Validação da coluna NÚMERO DO PROCESSO e transferência de valores que não se encaixam na coluna PROTOCOLO
 - **2024-12-11**
     - Finalização da coluna CLIENTES, incluindo tratamento dos dados das colunas:
         - NOME

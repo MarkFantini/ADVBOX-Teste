@@ -501,7 +501,7 @@ def lawsuits_data_treatment(df, csv_paths):
     
 
     # 09. TRIBUNAL
-
+    
 
     # 10. VARA - v_local_tramite | 'codlocaltramite'
     df['VARA'] = column_mapped_by_dict(df, csv_paths, cols=['codigo', 'descricao'], file='v_local_tramite', code='codigo', descrip='descricao', df_col='codlocaltramite')
