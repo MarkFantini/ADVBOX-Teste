@@ -7,6 +7,8 @@ advbox_venv/
 *.docx:Zone.Identifier
 *.py:Zone.Identifier
 *.ipynb
+
+app.py
 profissoes.txt
 mapa_profissoes.txt
 Journal.md
