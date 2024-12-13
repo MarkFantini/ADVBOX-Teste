@@ -489,7 +489,9 @@ def lawsuits_data_treatment(df, csv_paths):
     df['FASE PROCESSUAL'] = df['FASE PROCESSUAL'].map(fase_dict)
     
     # 06. ETAPA
-    
+    empty_rows = df['FASE PROCESSUAL'] == ''
+    df.loc[empty_rows, 'ETAPA'] = 'Conhecimento'
+    df.loc[~empty_rows, 'ETAPA'] = df.loc[~empty_rows, 'FASE PROCESSUAL'] 
 
     # 07. NÚMERO DO PROCESSO
     df['NÚMERO DO PROCESSO'] = df['numero_processo']
@@ -509,7 +511,7 @@ def lawsuits_data_treatment(df, csv_paths):
     df['COMARCA'] = column_mapped_by_dict(df, csv_paths, cols=['codigo', 'descricao'], file='v_comarca', code='codigo', descrip='descricao', df_col='codcomarca')
 
     # 12. PROTOCOLO
-    
+    # Processamento realizado na parte 07. NÚMERO DO PROCESSO
 
     # 13. EXPECTATIVA/VALOR
     df['EXPECTATIVA/VALOR'] = df['valor_causa'].astype(float)

@@ -1,11 +1,14 @@
+.vscode/
+advbox_venv/
+
+
 *.rar:Zone.Identifier
 *.xlsx:Zone.Identifier
 *.docx:Zone.Identifier
 *.py:Zone.Identifier
-*.txt
 *.ipynb
+profissoes.txt
+mapa_profissoes.txt
 Journal.md
 antes.csv
 depois.csv
-
-.vscode/
