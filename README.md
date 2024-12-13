@@ -18,7 +18,27 @@ O teste consiste em:
 
 # Changelog
 
-
+- **2024-12-12**
+    - Início do tratamento da planilha PROCESSOS. Colunas preenchidas:
+        - NOME DO CLIENTE
+        - TIPO DE AÇÃO
+        - GRUPO DE AÇÃO
+        - FASE PROCESSUAL
+        - NÚMERO DO PROCESSO (Falta validação)
+        - VARA
+        - COMARCA
+        - EXPECTATIVA/VALOR
+        - VALOR HONORÁRIOS
+        - PASTA
+        - DATA CADASTRO
+        - DATA FECHAMENTO
+        - DATA TRANSITO
+        - DATA ARQUIVAMENTO
+        - DATA REQUERIMENTO
+        - RESPONSÁVEL
+        - ANOTAÇÕES GERAIS (parcialmente)
+    - Ajuste do preenchimento da coluna ANOTAÇÕES GERAIS da planilha CLIENTES
+    - Arquivo final renomeado para CLIENTES - 92577 e PROCESSOS - 92577, correspondente ao número da empresa
 - **2024-12-11**
     - Finalização da coluna CLIENTES, incluindo tratamento dos dados das colunas:
         - NOME
