@@ -39,6 +39,7 @@ O teste consiste em:
         - ANOTAÇÕES GERAIS (parcialmente)
     - Ajuste do preenchimento da coluna ANOTAÇÕES GERAIS da planilha CLIENTES
     - Arquivo final renomeado para CLIENTES - 92577 e PROCESSOS - 92577, correspondente ao número da empresa
+    - Validação da coluna NÚMERO DO PROCESSO e transferência de valores que não se encaixam na coluna PROTOCOLO
 - **2024-12-11**
     - Finalização da coluna CLIENTES, incluindo tratamento dos dados das colunas:
         - NOME
