@@ -553,7 +553,6 @@ def lawsuits_data_treatment(df, csv_paths):
     df['RESPONSÁVEL'] = column_mapped_by_dict(df, csv_paths, cols=['id', 'nome'], code='id', descrip='nome', file='v_usuario', df_col='cod_usuario')
 
     # 22. ANOTAÇÕES GERAIS
-    df['grupo_processo'].to_csv()
     df['grupo_processo'] 	= column_mapped_by_dict(df, csv_paths, file='v_grupo_processo', df_col='grupo_processo')
     
     df['destino'] 			= column_mapped_by_dict(df, csv_paths, file='v_localizador', df_col='destino')
@@ -629,6 +628,7 @@ def create_code_description_dict(df, code=None, descrip=None):
     mapping_dict = {code_num : description for code_num, description in zip(df[code], df[descrip])}
     
     mapping_dict[''] = ''
+    mapping_dict['0'] = ''
     
     return mapping_dict
 

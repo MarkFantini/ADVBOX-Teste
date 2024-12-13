@@ -5,5 +5,7 @@
 *.txt
 *.ipynb
 Journal.md
+antes.csv
+depois.csv
 
 .vscode/
