@@ -189,7 +189,7 @@ LAWSUITS_DICT_COLUMN_CONVERSION = {
 def main():
     ########## EXTRACTION PHASE
     csv_files                = get_csv_files()
-    filenames, name_csv_dict = get_filenames(csv_files)
+    filenames, name_csv_dict, cod_empresa = get_filenames(csv_files)
     
     ########## TRANSFORMATION PHASE
     #          DataFrame dictionary
@@ -206,11 +206,11 @@ def main():
     ########## LOAD PHASE
     #          CLIENTS
     final_df_clients    = cleaned_base_clients[CLIENTS_FINAL_COLS]
-    write_excel(final_df_clients, 'CLIENTES - 92577')
+    write_excel(final_df_clients, 'CLIENTES - ' + cod_empresa)
 
     #          LAWSUITS
     final_df_lawsuits   = cleaned_base_lawsuits[LAWSUITS_FINAL_COLS]
-    write_excel(final_df_lawsuits, 'PROCESSOS - 92577')
+    write_excel(final_df_lawsuits, 'PROCESSOS - ' + cod_empresa)
 
 #                    SCRIPT INITIALIZATION
 if __name__ == '__main__':

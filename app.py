@@ -1,45 +1,45 @@
 from io import BytesIO
+import re
 
 import streamlit as st
 import pandas as pd
 
-from extract_module.extract import streamlit_get_csv_files, get_filenames
+# from transform_module.generate_bases import generate_df_dict
+# from transform_module.generate_bases import generate_base_clients, generate_base_lawsuits
+# from transform_module.data_wrangling import clients_data_treatment, lawsuits_data_treatment
 
-from transform_module.generate_bases import generate_df_dict
-from transform_module.generate_bases import generate_base_clients, generate_base_lawsuits
-from transform_module.data_wrangling import clients_data_treatment, lawsuits_data_treatment
-
-from load_module.export import write_excel
+# from load_module.export import write_excel
 
 st.title("Migração ADVBOX")
 
 st.header("Envie aqui seus arquivos")
 
-escolha = st.selectbox("Escolha o tipo de upload", ["Zip", "CSVs"])
+csv_files_buffer = st.file_uploader(
+    "Enviar arquivos",
+    type=['csv'],
+    accept_multiple_files=True,
+    help="Clique aqui para escolher os arquivos",
+    label_visibility="visible",
+    )
 
-match escolha:
-    case 'Zip':
-        zip_file_buffer = st.file_uploader(
-            "Enviar arquivo",
-            type=['rar', 'zip'],
-            accept_multiple_files=False,
-            help="Clique aqui para escolher o arquivo",
-            label_visibility="visible",
-            )
-    case "CSVs":
-        csv_files_buffer = st.file_uploader(
-            "Enviar arquivos",
-            type=['csv'],
-            accept_multiple_files=True,
-            help="Clique aqui para escolher os arquivos",
-            label_visibility="visible",
-            )
-        
-if zip_file_buffer:
-    ########## EXTRACTION PHASE
-    bytes_data = zip_file_buffer.getvalue()
-    zip_bytes = BytesIO(bytes_data)
-    csv_filenames = streamlit_get_csv_files(zip_bytes)
-    # filenames, name_csv_dict = get_filenames(csv_files)
-    for filename in csv_filenames:
-        print(filename)
+@st.cache_data
+def fetch_files(csv_files_buffer):
+    if csv_files_buffer:
+        cod_empresa = re.findall('\d+', csv_files_buffer[0].name)[0]
+        "Código da empresa: " + str(cod_empresa)
+        filenames = [re.sub('_CodEmpresa_\d+.csv', '', csv.name) for csv in csv_files_buffer]
+
+    return csv_files_buffer, filenames, cod_empresa
+
+if csv_files_buffer:
+    csv_files, filenames, cod_empresa = fetch_files(csv_files_buffer)
+
+
+for csv in csv_files:
+    try:
+        df = pd.read_csv(csv, sep=';', encoding='latin1', dtype=str)
+        st.write(df.head())
+    except (pd.errors.EmptyDataError, UnicodeDecodeError):
+        df = pd.read_csv(csv, sep=';', encoding='utf-8', dtype=str)
+        st.write(df.head())
+
