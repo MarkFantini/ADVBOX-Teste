@@ -7,14 +7,28 @@ O teste consiste em:
 - Realizar a seleção e tratamento dos dados das tabelas para duas planilhas resultado (CLIENTES e PROCESSOS), garantindo as condições de validação;
 - Criar uma interface simples de usuário para que o operador possa subir a base de backup e obter as planilhas correspondentes.
 
+# Estratégia de preenchimento para algumas colunas importantes
+
+## Planilha CLIENTES
+- A coluna **NOME** é preenchida da seguinte maneira: busca-se o primeiro valor não vazio entre as colunas `razao_social`, `razao_social_2` e `nome_fantasia` na planilha `v_clientes`.
+- A coluna **CPF CNPJ** é preenchida a partir da coluna `cpf_cnpj` da planilha `v_clientes`.
+- A coluna **PROFISSÃO** é preenchida a partir da coluna `profissao` da planilha `v_clientes`, e na sequência é mapeada por um dicionário de categorias de profissões.
+- As colunas **CELULAR**, **TELEFONE** e **EMAIL** são preenchidas semelhantemente à coluna **NOME**.
+- A coluna **PAIS** é preenchida a partir de um mapeamento da coluna **NACIONALIDADE**.
+- A coluna **SEXO** é preenchida a partir de um mapeamento da coluna **NACIONALIDADE**.
+- A coluna **ANOTAÇÕES GERAIS** traz em cada linha uma informação relevante sobre diferentes campos presentes na planilha original `v_clientes`.
+
+## Planilha PROCESSOS
+
+
 # Em progresso
 
 1. [x] ~~Validação das colunas da planilha CLIENTES e ajustes finais.~~
 2. [x] ~~Geração da planilha PROCESSOS.~~
-3. Validação das colunas da planilha PROCESSOS e ajustes finais.
-4. Criação de um log para monitoramento do processo de criação, garantindo observabilidade para o processo.
-5. Criação de testes para as etapas, garantindo uma pipeline segura.
-6. Criação da interface usando Streamlit.
+3. [x] ~~Validação das colunas da planilha PROCESSOS e ajustes finais.~~
+4. Criação da interface usando Streamlit.
+5. Criação de um log para monitoramento do processo de criação, garantindo observabilidade para o processo.
+6. Criação de testes para as etapas, garantindo uma pipeline segura.
 
 # Changelog
 
