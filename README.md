@@ -19,7 +19,14 @@ O teste consiste em:
 - A coluna **ANOTAÇÕES GERAIS** traz em cada linha uma informação relevante sobre diferentes campos presentes na planilha original `v_clientes`.
 
 ## Planilha PROCESSOS
-
+- A coluna **NOME DO CLIENTE** é preenchida a partir da coluna `cod_cliente` da planilha `v_processos`, mapeada a partir da coluna `codigo` da planilha `v_clientes`.
+- A coluna **TIPO DE AÇÃO** é preenchida a partir do arquivo `v_objeto_acao`.
+- A coluna **GRUPO DE AÇÃO** é preenchida a partir do arquivo `v_area_atuacao`.
+- A coluna **FASE PROCESSUAL** é preenchida a partir do arquivo `v_fase`.
+- A coluna **ETAPA** é preenchida a partir da coluna **FASE PROCESSUAL**.
+- As colunas **NÚMERO DO PROCESSO** e **PROTOCOLO** são preenchidas simultaneamente através de um processo de validação da quantidade de dígitos do número de cada processo.
+- A coluna **VARA** é preenchida a partir do arquivo `v_local_tramite`.
+- A coluna **COMARCA** é preenchida a partir do arquivo `v_comarca`.
 
 # Em progresso
 
