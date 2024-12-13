@@ -493,6 +493,7 @@ def lawsuits_data_treatment(df, csv_paths):
 
     # 07. NÚMERO DO PROCESSO
     df['NÚMERO DO PROCESSO'] = df['numero_processo']
+    df['NÚMERO DO PROCESSO'], df['PROTOCOLO'] = process_number_validation(df)
     
     # 08. PROCESSO ORIGINÁRIO
     
@@ -639,3 +640,12 @@ def column_mapped_by_dict(df, csv_paths, cols=['codigo', 'descricao'], file=None
     df[df_col] = df[df_col].map(map_dict)
     
     return df[df_col]
+
+def process_number_validation(df, keep='NÚMERO DO PROCESSO', move_to='PROTOCOLO'):
+    pattern = '\d+-\d+\.\d+\.\d+\.\d+\.\d+'
+    
+    matches = df[keep].str.contains(pattern, regex=True)
+    df.loc[~matches, move_to] = df.loc[~matches, keep]
+    df.loc[~matches, keep] = ''
+    
+    return df[keep], df[move_to]
